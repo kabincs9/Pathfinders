@@ -1,0 +1,163 @@
+/* src/styles/components/Permits.css */
+.permits-page {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.permits-page h1 {
+  color: #0033A0;
+  font-size: 2.5rem;
+  text-align: center;
+}
+
+.permits-page .subtitle {
+  text-align: center;
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+.permits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.permit-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  border-left: 4px solid #E63E2E;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.permit-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+}
+
+.permit-card h3 {
+  color: #0033A0;
+  margin-bottom: 0.5rem;
+  font-size: 1.3rem;
+}
+
+.permit-card .permit-price {
+  color: #E63E2E;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0.5rem 0;
+}
+
+.permit-card p {
+  color: #666;
+  margin: 0.3rem 0;
+}
+
+.apply-btn {
+  background: #E63E2E;
+  color: white;
+  border: none;
+  padding: 0.6rem 2rem;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-weight: 600;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.apply-btn:hover {
+  background: #C93527;
+  transform: scale(1.02);
+}
+
+/* Modal Styles */
+.permit-form-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 1rem;
+}
+
+.permit-form {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 12px;
+  max-width: 500px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 50px rgba(0,0,0,0.3);
+}
+
+.permit-form h2 {
+  color: #0033A0;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.permit-form .form-group {
+  margin-bottom: 1.2rem;
+}
+
+.permit-form .form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  color: #333;
+}
+
+.permit-form .form-group input,
+.permit-form .form-group select {
+  width: 100%;
+  padding: 0.8rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.permit-form .form-group input:focus,
+.permit-form .form-group select:focus {
+  outline: none;
+  border-color: #0033A0;
+}
+
+.close-btn {
+  background: #666;
+  color: white;
+  border: none;
+  padding: 0.8rem;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 0.5rem;
+  transition: background 0.3s;
+}
+
+.close-btn:hover {
+  background: #555;
+}
+
+@media (max-width: 768px) {
+  .permits-page {
+    padding: 1rem;
+  }
+  
+  .permits-page h1 {
+    font-size: 2rem;
+  }
+  
+  .permit-form {
+    padding: 1.5rem;
+  }
+}
