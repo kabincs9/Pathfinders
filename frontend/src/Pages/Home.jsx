@@ -1,8 +1,18 @@
 // src/pages/Home.jsx
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 import Hero from '../components/Hero';  // ← Correct import
 import '../styles/pages/Home.css';
 
 const Home = () => {
+  const [destinations, setDestinations] = useState([]);
+
+  useEffect(() => {
+    axios.get('/api/destinations')
+      .then((res) => setDestinations(res.data))
+      .catch((err) => console.error('Backend fetch failed:', err));
+  }, []);
+
   return (
     <div className="home">
       <Hero />  {/* ← Using the Hero component */}
@@ -30,6 +40,12 @@ const Home = () => {
             <p>Instant help when you need it most</p>
           </div>
         </div>
+      </section>
+
+      {/* TEMPORARY — remove once backend connection is confirmed */}
+      <section>
+        <h2>Backend Test: Destinations</h2>
+        <pre>{JSON.stringify(destinations, null, 2)}</pre>
       </section>
     </div>
   );
