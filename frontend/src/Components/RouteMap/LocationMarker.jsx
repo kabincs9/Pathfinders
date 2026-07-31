@@ -11,17 +11,18 @@ const destinationIcon = new L.Icon({
   popupAnchor: [1, -34],
 });
 
-const LocationMarkers = ({ locations }) => {
+const LocationMarkers = ({ locations, setSelectedDestination }) => {
   return (
     <>
       {locations.map((location) => (
         <Marker
           key={location.id}
           position={[location.lat, location.lng]}
-          icon={destinationIcon}   // <-- use this
+          icon={destinationIcon}
         >
           <Popup>
             <h3>{location.name}</h3>
+
             <p>{location.description}</p>
 
             <p>
@@ -33,6 +34,23 @@ const LocationMarkers = ({ locations }) => {
                 <strong>Tags:</strong> {location.tags.join(", ")}
               </p>
             )}
+
+            <button
+              onClick={() => setSelectedDestination(location)}
+              style={{
+                marginTop: "10px",
+                width: "100%",
+                padding: "8px",
+                background: "#d32f2f",
+                color: "white",
+                border: "none",
+                borderRadius: "6px",
+                cursor: "pointer",
+                fontWeight: "bold",
+              }}
+            >
+              🚗 Get Route
+            </button>
           </Popup>
         </Marker>
       ))}

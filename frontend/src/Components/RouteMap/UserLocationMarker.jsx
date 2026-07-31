@@ -20,7 +20,7 @@ const userIcon = L.divIcon({
   iconAnchor: [9, 9],
 });
 
-const UserLocationMarker = () => {
+const UserLocationMarker = ({ setUserLocation }) => {
   const map = useMap();
   const [position, setPosition] = useState(null);
 
@@ -39,7 +39,13 @@ const UserLocationMarker = () => {
 
         setPosition(userPosition);
 
-        // Move the map to the user's location
+        // Send location to parent component
+        setUserLocation({
+          lat: location.coords.latitude,
+          lng: location.coords.longitude,
+        });
+
+        // Fly to user's location
         map.flyTo(userPosition, 13, {
           duration: 1.5,
         });
@@ -51,14 +57,14 @@ const UserLocationMarker = () => {
         enableHighAccuracy: true,
       }
     );
-  }, [map]);
+  }, [map, setUserLocation]);
 
   if (!position) return null;
 
   return (
     <Marker position={position} icon={userIcon}>
       <Popup>
-        <strong>You are here 📍</strong>
+        <strong>📍 You are here</strong>
       </Popup>
     </Marker>
   );
