@@ -1,7 +1,9 @@
 // src/pages/SOS.jsx
 import { useState, useEffect } from "react";
+import { getDistance } from "geolib";
 import SOSCard from "../Components/SOS";
 import "../../src/styles/pages/SOS.css";
+import SOSMap from "../Components/SOSMap";
 
 const SOS = () => {
   const [location, setLocation] = useState(null);
@@ -37,17 +39,157 @@ const SOS = () => {
     );
   };
 
-  // Find nearby emergency services (mock data)
-  const findNearbyServices = (lat, lng) => {
-    // In production, this would call a backend API or Google Places API
-    const mockServices = [
-      { name: 'Kathmandu Police Station', type: 'police', distance: '0.5 km', phone: '100' },
-      { name: 'Teaching Hospital', type: 'hospital', distance: '1.2 km', phone: '102' },
-      { name: 'Tourist Police Office', type: 'tourist_police', distance: '0.8 km', phone: '1144' },
-      { name: 'Fire Station', type: 'fire', distance: '2.1 km', phone: '101' }
-    ];
-    setNearbyServices(mockServices);
-  };
+ // Find nearby emergency services using OpenStreetMap
+const findNearbyServices = async (lat, lng) => {
+
+  try {
+
+    const query = `
+    [out:json];
+
+    (
+      node["amenity"="hospital"](around:5000,${lat},${lng});
+      node["amenity"="police"](around:5000,${lat},${lng});
+      node["amenity"="fire_station"](around:5000,${lat},${lng});
+
+      way["amenity"="hospital"](around:5000,${lat},${lng});
+      way["amenity"="police"](around:5000,${lat},${lng});
+      way["amenity"="fire_station"](around:5000,${lat},${lng});
+    );
+
+    out center;
+    `;
+
+
+
+    const response = await fetch(
+      "https://overpass-api.de/api/interpreter",
+      {
+        method:"POST",
+        body:query
+      }
+    );
+
+
+
+    const data = await response.json();
+
+
+
+    const services = data.elements
+
+    .map(place => {
+
+
+      const serviceLat =
+        place.lat || place.center?.lat;
+
+
+      const serviceLng =
+        place.lon || place.center?.lon;
+
+
+
+      if(!serviceLat || !serviceLng)
+        return null;
+
+
+
+      let type="other";
+
+
+
+      if(place.tags?.amenity==="hospital")
+        type="hospital";
+
+
+      if(place.tags?.amenity==="police")
+        type="police";
+
+
+      if(place.tags?.amenity==="fire_station")
+        type="fire";
+
+
+
+      const distance =
+        getDistance(
+
+          {
+            latitude:lat,
+            longitude:lng
+          },
+
+
+          {
+            latitude:serviceLat,
+            longitude:serviceLng
+          }
+
+        ) / 1000;
+
+
+
+      return {
+
+        name:
+          place.tags?.name ||
+          "Emergency Service",
+
+
+        type,
+
+
+        distance:
+          distance.toFixed(2)+" km",
+
+
+        rawDistance:distance,
+
+
+        phone:
+          place.tags?.phone ||
+          "N/A",
+
+
+        lat:serviceLat,
+
+        lng:serviceLng
+
+      };
+
+
+    })
+
+    .filter(Boolean);
+
+
+
+    services.sort(
+      (a,b)=>
+      a.rawDistance-b.rawDistance
+    );
+
+
+
+    setNearbyServices(
+      services.slice(0,6)
+    );
+
+
+  }
+
+
+  catch(error){
+
+    console.error(
+      "Nearby services error:",
+      error
+    );
+
+  }
+
+};
 
   // Share location via WhatsApp
   const shareLocation = () => {
@@ -200,13 +342,20 @@ https://maps.google.com/?q=${location.lat},${location.lng}
             </div>
             
             <div className="location-actions">
-              <button 
-                className="open-maps-btn"
-                onClick={openInGoogleMaps}
-              >
-                🗺️ Open in Maps
-              </button>
-            </div>
+
+  <button 
+    className="open-maps-btn"
+    onClick={openInGoogleMaps}
+  >
+    🗺️ Open in Maps
+  </button>
+
+
+  {location && (
+    <SOSMap location={location} />
+  )}
+
+</div>
           </div>
         ) : (
           <p className="no-location">📍 Location not detected</p>
@@ -266,18 +415,22 @@ https://maps.google.com/?q=${location.lat},${location.lng}
                     📞
                   </button>
                   <button 
-                    className="service-directions"
-                    onClick={() => {
-                      if (location) {
-                        window.open(
-                          `https://www.google.com/maps/dir/${location.lat},${location.lng}/${service.name}`,
-                          '_blank'
-                        );
-                      }
-                    }}
-                  >
-                    🗺️
-                  </button>
+                        className="service-directions"
+                          onClick={() => {
+
+                          if(location){
+
+                            window.open(
+        `https://www.google.com/maps/dir/${location.lat},${location.lng}/${service.lat},${service.lng}`,
+'_blank'
+                                    );
+
+                                }
+
+                              }}
+                        >
+                          🗺️
+                    </button>
                 </div>
               </div>
             ))}
