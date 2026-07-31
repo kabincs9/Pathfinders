@@ -1,6 +1,6 @@
 // src/pages/TripPlanner.jsx
-import { useState, useEffect } from 'react';
-import MapPlaceholder from '../components/MapPlaceholder';
+import { useState } from 'react';
+import RouteMap from '../Components/RouteMap/index.jsx';
 import '../styles/pages/TripPlanner.css';
 
 const TripPlanner = () => {
@@ -138,14 +138,16 @@ const TripPlanner = () => {
         </div>
       )}
 
-      {/* Route Planner Map Section */}
       <section className="route-planner-section">
-        <div className="section-header">
-          <h2>📍 Route Planner</h2>
-          <p>Enter your start and destination to find the best route with recommendations</p>
-        </div>
-        <MapPlaceholder />
-      </section>
+  <div className="section-header">
+    <h2>📍 Route Planner</h2>
+    <p>
+      Explore Nepal, discover tourist destinations, and find the best routes.
+    </p>
+  </div>
+
+  <RouteMap />
+</section>
 
       {/* Trip Planner Form */}
       <div className="trip-form-section">

@@ -1,6 +1,6 @@
 // src/components/Hero.jsx
 import '../styles/components/Hero.css';
-import heroVideo from '../img/ever3.mp4';  // ← Your video file
+import heroVideo from '../assets/img/ever3.mp4';  // ← Your video file
 
 const Hero = () => {
   return (
