@@ -1,5 +1,6 @@
 // src/pages/TripPlanner.jsx
 import { useState, useEffect } from 'react';
+import MapPlaceholder from '../components/MapPlaceholder';
 import '../styles/pages/TripPlanner.css';
 
 const TripPlanner = () => {
@@ -137,75 +138,87 @@ const TripPlanner = () => {
         </div>
       )}
 
+      {/* Route Planner Map Section */}
+      <section className="route-planner-section">
+        <div className="section-header">
+          <h2>📍 Route Planner</h2>
+          <p>Enter your start and destination to find the best route with recommendations</p>
+        </div>
+        <MapPlaceholder />
+      </section>
+
       {/* Trip Planner Form */}
-      <form className="planner-form" onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Starting Point</label>
-          <select name="from" onChange={handleChange} required>
-            <option value="">Select...</option>
-            <option value="kathmandu">Kathmandu</option>
-            <option value="pokhara">Pokhara</option>
-            <option value="chitwan">Chitwan</option>
-            <option value="lumbini">Lumbini</option>
-          </select>
-        </div>
-
-        <div className="form-group">
-          <label>Destination</label>
-          <select name="to" onChange={handleChange} required>
-            <option value="">Select...</option>
-            <option value="kathmandu">Kathmandu</option>
-            <option value="pokhara">Pokhara</option>
-            <option value="chitwan">Chitwan</option>
-            <option value="lumbini">Lumbini</option>
-            <option value="everest">Everest Base Camp</option>
-            <option value="annapurna">Annapurna Circuit</option>
-          </select>
-        </div>
-
-        <div className="form-row">
+      <div className="trip-form-section">
+        <h2>📋 Plan Your Trip Details</h2>
+        <form className="planner-form" onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Budget (USD)</label>
-            <input 
-              type="number" 
-              name="budget" 
-              placeholder="e.g., 500" 
-              onChange={handleChange}
-              required
-            />
+            <label>Starting Point</label>
+            <select name="from" onChange={handleChange} required>
+              <option value="">Select...</option>
+              <option value="kathmandu">Kathmandu</option>
+              <option value="pokhara">Pokhara</option>
+              <option value="chitwan">Chitwan</option>
+              <option value="lumbini">Lumbini</option>
+            </select>
           </div>
 
           <div className="form-group">
-            <label>Duration (Days)</label>
-            <input 
-              type="number" 
-              name="days" 
-              placeholder="e.g., 5" 
-              onChange={handleChange}
-              required
-            />
+            <label>Destination</label>
+            <select name="to" onChange={handleChange} required>
+              <option value="">Select...</option>
+              <option value="kathmandu">Kathmandu</option>
+              <option value="pokhara">Pokhara</option>
+              <option value="chitwan">Chitwan</option>
+              <option value="lumbini">Lumbini</option>
+              <option value="everest">Everest Base Camp</option>
+              <option value="annapurna">Annapurna Circuit</option>
+            </select>
           </div>
-        </div>
 
-        <div className="form-group">
-          <label>Trip Type</label>
-          <select name="preference" onChange={handleChange}>
-            <option value="">Select...</option>
-            <option value="adventure">Adventure</option>
-            <option value="cultural">Cultural</option>
-            <option value="religious">Religious</option>
-            <option value="nature">Nature</option>
-          </select>
-        </div>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Budget (USD)</label>
+              <input 
+                type="number" 
+                name="budget" 
+                placeholder="e.g., 500" 
+                onChange={handleChange}
+                required
+              />
+            </div>
 
-        {preferences.cuisine.length > 0 && (
-          <div className="pref-summary">
-            <p>📍 Using your preferences: <strong>{preferences.cuisine.join(', ')}</strong> | Budget: <strong>{preferences.budget}</strong></p>
+            <div className="form-group">
+              <label>Duration (Days)</label>
+              <input 
+                type="number" 
+                name="days" 
+                placeholder="e.g., 5" 
+                onChange={handleChange}
+                required
+              />
+            </div>
           </div>
-        )}
 
-        <button type="submit" className="submit-btn">🚀 Plan My Trip</button>
-      </form>
+          <div className="form-group">
+            <label>Trip Type</label>
+            <select name="preference" onChange={handleChange}>
+              <option value="">Select...</option>
+              <option value="adventure">Adventure</option>
+              <option value="cultural">Cultural</option>
+              <option value="religious">Religious</option>
+              <option value="nature">Nature</option>
+            </select>
+          </div>
+
+          {preferences.cuisine.length > 0 && (
+            <div className="pref-summary">
+              <p>📍 Using your preferences: <strong>{preferences.cuisine.join(', ')}</strong> | Budget: <strong>{preferences.budget}</strong></p>
+            </div>
+          )}
+
+          <button type="submit" className="submit-btn">🚀 Plan My Trip</button>
+        </form>
+      </div>
     </div>
   );
 };
